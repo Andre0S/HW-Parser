@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parser</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+
+<div id="central_container">
+    <input type="file" id="file_exchanger" accept=".txt" hidden/>
+    <button class="btn" id="loadbtn" >Load</button>
+    <button class="btn_disabled" id="startbtn" >Start</button>
+    <div id="debugger" class="console_disabled">
+        <textarea id="console" class="console_disabled" placeholder="Debugger">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas vehicula sapien eu tristique. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In vitae consectetur odio. Nullam pretium nulla lorem, placerat vulputate purus tempor ut. In vestibulum laoreet nibh, id lacinia quam facilisis et. Etiam quis viverra nunc. Integer et ex dui. Vivamus sit amet efficitur nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+            Suspendisse potenti. Nulla suscipit vel nibh fringilla ullamcorper. Sed ligula justo, dictum quis dolor sed, pretium tincidunt ex. Nullam tincidunt nulla vel ultricies pharetra. Curabitur laoreet facilisis elit, in efficitur elit posuere eget. Phasellus ut tempus massa. Pellentesque eget tempor quam. Integer laoreet tincidunt arcu eget tempor. Nam risus nunc, efficitur sit amet iaculis a, sodales vitae tortor.
+
+            Donec ut tortor posuere, congue urna sit amet, tristique massa. Donec sit amet semper arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sollicitudin justo sem, eu auctor ipsum rutrum ac. Ut porta risus ac imperdiet mollis. Integer eu libero at metus ultricies bibendum. Quisque lacinia quam eu est sagittis mollis. Suspendisse vel nisi et justo sodales gravida. Praesent et tellus at neque mattis pellentesque. Nullam vulputate dignissim dolor viverra faucibus. Etiam id libero in ipsum convallis finibus. Ut nec tortor tristique, bibendum sapien vitae, venenatis libero. Cras augue nisl, rutrum sed luctus egestas, semper non dui. In urna tellus, placerat nec sollicitudin a, bibendum id massa.
+
+            Praesent vel aliquam ex. Proin vel quam fermentum, fermentum magna eu, egestas elit. Suspendisse vitae tellus quis velit efficitur dictum non id purus. Pellentesque tempus iaculis pharetra. Maecenas sit amet lectus dictum purus lobortis placerat ac nec nibh. Nunc sollicitudin sed metus id pretium. Phasellus convallis ex id neque tincidunt, eu eleifend nisl placerat. Sed mollis dui augue, ac gravida lacus faucibus sed. Suspendisse condimentum metus dictum lacus egestas convallis at non libero. Mauris viverra lobortis gravida. Praesent fermentum tempor erat ut pulvinar. Fusce ut orci tortor. Nunc efficitur semper vulputate. Sed vehicula euismod erat vehicula blandit. Cras sollicitudin libero id mauris porttitor bibendum.
+
+            Aenean sit amet condimentum velit. Donec ac ante ac felis eleifend tempor dictum ut justo. Donec fermentum vestibulum dolor, vel iaculis lorem suscipit non. In hac habitasse platea dictumst. Nullam imperdiet erat vitae egestas vulputate. Donec dapibus porttitor tristique. Vestibulum malesuada rutrum consequat. Ut suscipit velit sit amet magna suscipit porttitor. Aliquam ut viverra lorem, in sagittis leo. Etiam placerat odio mollis, tristique erat eu, sodales neque. Ut nec dolor ante. Donec sodales purus id augue imperdiet condimentum.
+        </textarea>
+    </div>
+    <button class="btn_disabled" id="downloadbtn" >Download</button>
+    <svg version="1.1" id="microchip" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+    <path id="microchip" d="M590.2,175.4c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3V108c0-29-23.8-52.8-52.8-52.8H337.9V9.8c0-5.4-4.4-9.8-9.8-9.8h0c-5.4,0-9.8,4.4-9.8,9.8v45.3h-10.5
+        V9.8c0-5.4-4.4-9.8-9.8-9.8c-5.4,0-9.8,4.4-9.8,9.8v45.3h-10.5V9.8c0-5.4-4.4-9.8-9.8-9.8c-5.4,0-9.8,4.4-9.8,9.8v45.3h-51.9V9.8
+        c0-5.4-4.4-9.8-9.8-9.8c-5.4,0-9.8,4.4-9.8,9.8v45.3h-10.5V9.8c0-5.4-4.4-9.8-9.8-9.8h0c-5.4,0-9.8,4.4-9.8,9.8v45.3h-10.5V9.8
+        c0-5.4-4.4-9.8-9.8-9.8c-5.4,0-9.8,4.4-9.8,9.8v45.3h-18c-29,0-52.8,23.8-52.8,52.8v17.6H9.8c-5.4,0-9.8,4.4-9.8,9.8
+        c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8
+        c0,5.4,4.4,9.8,9.8,9.8h45.3v40.7H9.8c-5.4,0-9.8,4.4-9.8,9.8c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8
+        c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8v0c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8
+        c0,5.4,4.4,9.8,9.8,9.8h45.3v40.7H9.8c-5.4,0-9.8,4.4-9.8,9.8c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8v0
+        c0,5.4,4.4,9.8,9.8,9.8h45.3v10.5H9.8c-5.4,0-9.8,4.4-9.8,9.8c0,5.4,4.4,9.8,9.8,9.8h45.3V492c0,29,23.8,52.8,52.8,52.8h18v45.3
+        c0,5.4,4.4,9.8,9.8,9.8c5.4,0,9.8-4.4,9.8-9.8v-45.3h10.5v45.3c0,5.4,4.4,9.8,9.8,9.8h0c5.4,0,9.8-4.4,9.8-9.8v-45.3h10.5v45.3
+        c0,5.4,4.4,9.8,9.8,9.8c5.4,0,9.8-4.4,9.8-9.8v-45.3h51.9v45.3c0,5.4,4.4,9.8,9.8,9.8c5.4,0,9.8-4.4,9.8-9.8v-45.3H288v45.3
+        c0,5.4,4.4,9.8,9.8,9.8c5.4,0,9.8-4.4,9.8-9.8v-45.3h10.5v45.3c0,5.4,4.4,9.8,9.8,9.8h0c5.4,0,9.8-4.4,9.8-9.8v-45.3H492
+        c29,0,52.8-23.8,52.8-52.8v-14.9h45.3c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3V447h45.3c5.4,0,9.8-4.4,9.8-9.8v0
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8v0
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8v0c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8
+        c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5H590.2z M373.6,470.4h-17.4v-5.7h17.4V470.4z M321.1,491.9h5.7v30.3h-5.7V491.9z M329.1,522.2
+        v-30.3h5.7v30.3H329.1z M297,522.2v-30.3h6v30.3H297z M289.1,491.9h5.7v30.3h-5.7V491.9z M265.3,522.2v-30.3h5.7v30.3H265.3z
+         M263,491.9v30.3h-60v-30.3h19.2v-19.2h21.6v19.2H263z M165.9,522.2L165.9,522.2h-3v-30.3h6v30.3H165.9z M131.2,522.2v-30.3h5.7
+        v30.3H131.2z M139.1,522.2v-30.3h5.7v30.3H139.1z M187.1,491.9h5.7v30.3h-5.7V491.9z M195,522.2v-30.3h5.7v30.3H195z M222.1,470.4
+        v-5.7h21.6v5.7H222.1z M349.3,246.6h-5.7v-23.3h5.7V246.6z M77.8,437.2v-4.5h31.9v6H77.8V437.2L77.8,437.2z M77.8,422.4v-5.7h31.9
+        v5.7H77.8z M109.7,424.7v5.7H77.8v-5.7H109.7z M77.8,414.5v-5.7h31.9v5.7H77.8z M77.8,446.6v-5.7h31.9v5.7H77.8z M109.7,448.8v5.7
+        H77.8v-5.7H109.7z M77.8,456.8h31.9v5.7H77.8V456.8z M222.1,456.8h21.6v5.7h-21.6V456.8z M222.1,454.5v-5.7h21.6v5.7H222.1z
+         M222.1,446.6v-5.7h21.6v5.7H222.1z M222.1,438.6v-6h21.6v6H222.1z M222.1,430.4v-5.7h21.6v5.7H222.1z M222.1,422.4v-5.7h21.6v5.7
+        H222.1z M222.1,414.5v-5.7h21.6v5.7H222.1z M222.1,406.6v-5.7h21.6v5.7H222.1z M109.7,406.6H77.8v-5.7h31.9V406.6z M109.7,156.1v5.7
+        H77.8v-5.7H109.7z M77.8,153.9v-5.7h31.9v5.7H77.8z M109.7,164.1v6H77.8v-6H109.7z M215.3,246.6h-5.7v-23.3h5.7V246.6z M341.3,246.6
+        h-5.7v-23.3h5.7V246.6z M207.4,246.6h-5.7v-23.3h5.7V246.6z M313,310.2v4.5H287v-4.5h-4.5v-20.5h4.5v-4.6H313v4.6h4.5v20.5H313z
+         M152.9,277.2H179v5.7h-26.1V277.2z M199.4,289.8v20.5h-5.7v-20.5H199.4z M201.7,310.2v-20.5h5.7v20.5H201.7z M191.5,289.8v20.5
+        h-5.7v-20.5H191.5z M209.6,310.2v-20.5h5.7v20.5H209.6z M179,275h-26.1v-5.7H179V275z M146.2,289.8v20.5h-5.7v-20.5H146.2z
+         M148.5,310.2v-20.5h4.4v-4.6H179v4.6h4.6v20.5H179v4.5h-26.1v-4.5H148.5z M217.6,310.2v-20.5h4.6v-4.6h21.6v4.6h4.7v20.5h-4.7v4.5
+        h-21.6v-4.5H217.6z M313,282.9H287v-5.7H313V282.9z M264.3,289.8v20.5h-5.7v-20.5H264.3z M266.6,310.2v-20.5h5.7v20.5H266.6z
+         M256.4,289.8v20.5h-5.7v-20.5H256.4z M274.5,310.2v-20.5h5.7v20.5H274.5z M313,275H287v-5.7H313V275z M243.8,282.9h-21.6v-5.7h21.6
+        V282.9z M179,267h-26.1v-5.7H179V267z M138.3,289.8v20.5h-5.7v-20.5H138.3z M152.9,317H179v5.7h-26.1V317z M222.1,317h21.6v5.7
+        h-21.6V317z M287,317H313v5.7H287V317z M319.8,310.2v-20.5h5.7v20.5H319.8z M313,267H287v-5.7H313V267z M243.8,275h-21.6v-5.7h21.6
+        V275z M179,259.1h-26.1v-5.7H179V259.1z M130.3,289.8v20.5h-5.7v-20.5H130.3z M152.9,324.9H179v5.7h-26.1V324.9z M222.1,324.9h21.6
+        v5.7h-21.6V324.9z M287,324.9H313v5.7H287V324.9z M327.7,310.2v-20.5h5.7v20.5H327.7z M313,259.1H287v-5.7H313V259.1z M243.8,267
+        h-21.6v-5.7h21.6V267z M199.4,246.6h-5.7v-23.3h5.7V246.6z M191.5,246.6h-5.7v-23.3h5.7V246.6z M183.5,246.6H179v4.6h-26.1v-4.6
+        h-4.4v-23.3h35.1V246.6z M146.2,246.6h-5.7v-23.3h5.7V246.6z M138.3,246.6h-5.7v-23.3h5.7V246.6z M130.3,246.6h-5.7v-23.3h5.7V246.6
+        z M122.4,246.6h-5.7v-23.3h5.7V246.6z M109.7,267H77.8v-5.7h31.9V267z M109.7,269.3v5.7H77.8v-5.7H109.7z M109.7,277.2v5.7H77.8
+        v-5.7H109.7z M122.4,289.8v20.5h-5.7v-20.5H122.4z M109.7,322.7H77.8V317h31.9V322.7z M109.7,324.9v5.7H77.8v-5.7H109.7z
+         M109.7,332.9v5.7H77.8v-5.7H109.7z M152.9,332.9H179v5.7h-26.1V332.9z M222.1,332.9h21.6v5.7h-21.6V332.9z M287,332.9H313v5.7H287
+        V332.9z M335.7,310.2v-20.5h5.7v20.5H335.7z M333.4,246.6h-5.7v-23.3h5.7V246.6z M325.5,246.6h-5.7v-23.3h5.7V246.6z M317.5,246.6
+        H313v4.6H287v-4.6h-4.5v-23.3h35.1V246.6z M280.2,246.6h-5.7v-23.3h5.7V246.6z M272.3,246.6h-5.7v-23.3h5.7V246.6z M264.3,246.6
+        h-5.7v-23.3h5.7V246.6z M256.4,246.6h-5.7v-23.3h5.7V246.6z M243.8,259.1h-21.6v-5.7h21.6V259.1z M114.4,223.3v23.3h-4.7v4.6H77.8
+        v-47.1h31.9v19.2H114.4z M77.8,201.8v-5.7h31.9v5.7H77.8z M77.8,193.9v-5.7h31.9v5.7H77.8z M77.8,186v-5.7h31.9v5.7H77.8z M77.8,178
+        v-5.7h31.9v5.7H77.8z M77.8,253.4h31.9v5.7H77.8V253.4z M77.8,285.2h31.9v4.6h4.7v20.5h-4.7v4.5H77.8V285.2z M77.8,340.8h31.9v5.7
+        H77.8V340.8z M152.9,340.8H179v5.7h-26.1V340.8z M222.1,340.8h21.6v5.7h-21.6V340.8z M287,340.8H313v5.7H287V340.8z M343.6,310.2
+        v-20.5h5.7v20.5H343.6z M248.4,223.3v23.3h-4.7v4.6h-21.6v-4.6h-4.6v-23.3h4.6v-19.2h21.6v19.2H248.4z M222.1,201.8v-5.7h21.6v5.7
+        H222.1z M222.1,193.9v-5.7h21.6v5.7H222.1z M222.1,186v-5.7h21.6v5.7H222.1z M222.1,178v-5.7h21.6v5.7H222.1z M222.1,170.1v-6h21.6
+        v6H222.1z M222.1,161.8v-5.7h21.6v5.7H222.1z M222.1,153.9v-5.7h21.6v5.7H222.1z M222.1,145.9v-5.7h21.6v5.7H222.1z M109.7,145.9
+        H77.8v-5.7h31.9V145.9z M77.8,464.7h31.9v5.7H77.8V464.7z M373.6,462.4h-17.4v-5.7h17.4V462.4z M373.6,454.5h-17.4v-5.7h17.4V454.5z
+         M373.6,446.6h-17.4v-5.7h17.4V446.6z M373.6,438.6h-17.4v-6h17.4V438.6z M373.6,430.4h-17.4v-5.7h17.4V430.4z M373.6,422.4h-17.4
+        v-5.7h17.4V422.4z M373.6,414.5h-17.4v-5.7h17.4V414.5z M373.6,406.6h-17.4v-5.7h17.4V406.6z M373.6,398.6h-17.4v-19.2H243.8v19.2
+        h-21.6v-19.2H109.7v19.2H77.8v-49.9h31.9v4.7h4.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h4.4v-4.7
+        H179v4.7h4.6v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h4.6v-4.7h21.6v4.7h4.7v26h2.3v-26h5.7v26h2.3
+        v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h4.5v-4.7H313v4.7h4.5v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26h5.7v26h2.3v-26
+        h5.7v26h2.3v-26h4.7v-4.7h17.4V398.6z M373.6,346.5h-17.4v-5.7h17.4V346.5z M373.6,338.5h-17.4v-5.7h17.4V338.5z M373.6,330.6h-17.4
+        v-5.7h17.4V330.6z M373.6,322.7h-17.4V317h17.4V322.7z M373.6,314.7h-17.4v-4.5h-4.7v-20.5h4.7v-4.6h17.4V314.7z M373.6,282.9h-17.4
+        v-5.7h17.4V282.9z M373.6,275h-17.4v-5.7h17.4V275z M373.6,267h-17.4v-5.7h17.4V267z M373.6,259.1h-17.4v-5.7h17.4V259.1z
+         M373.6,251.2h-17.4v-4.6h-4.7v-23.3h4.7v-19.2h17.4V251.2z M373.6,201.8h-17.4v-5.7h17.4V201.8z M373.6,193.9h-17.4v-5.7h17.4
+        V193.9z M373.6,186h-17.4v-5.7h17.4V186z M373.6,178h-17.4v-5.7h17.4V178z M373.6,170.1h-17.4v-6h17.4V170.1z M373.6,161.8h-17.4
+        v-5.7h17.4V161.8z M373.6,153.9h-17.4v-5.7h17.4V153.9z M373.6,145.9h-17.4v-5.7h17.4V145.9z M373.6,138h-17.4v-5.7h17.4V138z
+         M243.8,138h-21.6v-5.7h21.6V138z M222.1,130.1v-19.2h-19.2v-33h60v33h-19.2v19.2H222.1z M136.8,77.8v33h-5.7v-33H136.8z
+         M144.8,110.9h-5.7v-33h5.7V110.9z M165.9,77.8L165.9,77.8h3v33h-6v-33H165.9z M200.7,77.8v33H195v-33H200.7z M192.7,77.8v33h-5.7
+        v-33H192.7z M270.9,77.8v33h-5.7v-33H270.9z M303,77.8v33h-6v-33H303z M294.7,77.8v33h-5.7v-33H294.7z M326.8,77.8v33h-5.7v-33
+        H326.8z M334.7,110.9h-5.7v-33h5.7V110.9z M318.9,77.8v33h-5.7v-33H318.9z M310.9,110.9h-5.7v-33h5.7V110.9z M286.8,77.8v33h-5.7
+        v-33H286.8z M278.9,110.9h-5.7v-33h5.7V110.9z M184.8,77.8v33h-5.7v-33H184.8z M176.9,110.9h-5.7v-33h5.7V110.9z M160.7,77.8v33H155
+        v-33H160.7z M152.7,77.8v33h-5.7v-33H152.7z M77.8,108c0-16.6,13.5-30.1,30.1-30.1h21v33h-19.2v19.2H77.8V108z M77.8,132.3h31.9v5.7
+        H77.8V132.3z M108,522.2c-16.6,0-30.1-13.5-30.1-30.1v-19.4h31.9v19.2h19.2v30.3H108z M147.1,522.2v-30.3h5.7v30.3H147.1z
+         M155,491.9h5.7v30.3H155V491.9z M171.2,522.2v-30.3h5.7v30.3H171.2z M179.1,522.2v-30.3h5.7v30.3H179.1z M273.2,522.2v-30.3h5.7
+        v30.3H273.2z M281.1,522.2v-30.3h5.7v30.3H281.1z M305.3,522.2v-30.3h5.7v30.3H305.3z M313.2,491.9h5.7v30.3h-5.7V491.9z M522.2,492
+        c0,16.6-13.5,30.1-30.1,30.1H337v-30.3h19.2v-19.2h17.4v19.2h125.5v-19.2h23.1V492z M522.2,470.4h-23.1v-5.7h23.1V470.4z
+         M522.2,462.4h-23.1v-5.7h23.1V462.4z M522.2,454.5h-23.1v-5.7h23.1V454.5z M522.2,446.6h-23.1v-5.7h23.1V446.6z M522.2,438.6h-23.1
+        v-6h23.1V438.6z M522.2,430.4h-23.1v-5.7h23.1V430.4z M522.2,422.4h-23.1v-5.7h23.1V422.4z M522.2,414.5h-23.1v-5.7h23.1V414.5z
+         M522.2,406.6h-23.1v-5.7h23.1V406.6z M522.2,398.6h-23.1v-5.7h23.1V398.6z M522.2,390.7h-23.1V385h23.1V390.7z M522.2,382.7h-23.1
+        v-5.7h23.1V382.7z M522.2,374.8h-23.1v-5.7h23.1V374.8z M522.2,366.9h-23.1v-5.7h23.1V366.9z M522.2,358.9h-23.1v-6h23.1V358.9z
+         M522.2,350.6h-23.1V345h23.1V350.6z M522.2,342.7h-23.1V337h23.1V342.7z M522.2,334.7h-23.1v-5.7h23.1V334.7z M522.2,326.8h-23.1
+        v-5.7h23.1V326.8z M522.2,318.9h-23.1v-5.7h23.1V318.9z M522.2,310.9h-23.1v-5.7h23.1V310.9z M522.2,303h-23.1v-6h23.1V303z
+         M522.2,294.7h-23.1v-5.7h23.1V294.7z M522.2,286.8h-23.1v-5.7h23.1V286.8z M522.2,278.9h-23.1v-5.7h23.1V278.9z M522.2,270.9h-23.1
+        v-5.7h23.1V270.9z M522.2,263h-23.1v-6.4h23.1V263z M522.2,254.3h-23.1v-5.7h23.1V254.3z M522.2,246.4h-23.1v-5.7h23.1V246.4z
+         M522.2,238.4h-23.1v-5.7h23.1V238.4z M522.2,230.5h-23.1v-5.7h23.1V230.5z M522.2,222.6h-23.1v-6h23.1V222.6z M522.2,214.3h-23.1
+        v-5.7h23.1V214.3z M522.2,206.4h-23.1V200h23.1V206.4z M522.2,197.7h-23.1V192h23.1V197.7z M522.2,189.8h-23.1v-5.7h23.1V189.8z
+         M522.2,181.8h-23.1v-5.7h23.1V181.8z M522.2,173.9h-23.1v-5.7h23.1V173.9z M522.2,165.9h-23.1v-6h23.1V165.9z M522.2,157.7h-23.1
+        V152h23.1V157.7z M522.2,149.7h-23.1v-5.7h23.1V149.7z M522.2,141.8h-23.1v-5.7h23.1V141.8z M522.2,133.9h-23.1v-5.7h23.1V133.9z
+         M522.2,125.9h-23.1v-15.1H373.6v19.2h-17.4v-19.2H337v-33h155c16.6,0,30.1,13.5,30.1,30.1V125.9z"/>
+    </svg>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

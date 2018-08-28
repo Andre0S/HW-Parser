@@ -1,5 +1,9 @@
 
 let file = undefined;
+let temporary = "";
+let output = "";
+
+let alphabetical = /([a-z]+[A-Z])*/;
 
 let startEnabled = false;
 let downloadEnabled = false;
@@ -42,5 +46,34 @@ btnStart.addEventListener('click', function() {
         btnDownload.className = 'btn';
         consoleBG.className = 'console_enabled';
         consoleDebug.className = 'console_enabled';
+        main();
     }
 });
+
+function main() {
+    file = file.split(/[\r\n]+/).filter(function(el) {return (el.length > 0)});
+    removeComments();
+    printer();
+}
+
+function removeComments() {
+    let aux = "";
+    let comments = false;
+    for (let i =0; i<file.length; i++) {
+        file[i] = file[i].split(/[\s\b]+/).filter(function(el) {return (el.length > 0)});
+        aux = "";
+        comments = false;
+        for (let j = 0; j <file[i].length; j++) {
+            if (file[i]=='-' && file[i+1]=='-' && !comments) {
+                comments = true;
+            }
+        }
+    }
+}
+
+function printer() {
+    for (let i = 0; i < file.length; i++) {
+        consoleDebug.value += file[i] + "\r\n";
+        console.log(file[i]);
+    }
+}

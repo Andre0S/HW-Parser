@@ -3,7 +3,9 @@ let file = undefined;
 let temporary = "";
 let output = "";
 
-let alphabetical = /([a-z]+[A-Z])*/;
+let alphabetical = /([a-z]|[A-Z])+/;
+let digits = /([0-9])+/;
+let commentary = /"--".*/;
 
 let startEnabled = false;
 let downloadEnabled = false;
@@ -51,29 +53,33 @@ btnStart.addEventListener('click', function() {
 });
 
 function main() {
+    consoleDebug.value = '';
     file = file.split(/[\r\n]+/).filter(function(el) {return (el.length > 0)});
     removeComments();
     printer();
 }
 
 function removeComments() {
-    let aux = "";
     let comments = false;
+    let auxiliary = undefined;
+    let auxiliary2 = "";
     for (let i =0; i<file.length; i++) {
-        file[i] = file[i].split(/[\s\b]+/).filter(function(el) {return (el.length > 0)});
-        aux = "";
         comments = false;
-        for (let j = 0; j <file[i].length; j++) {
-            if (file[i]=='-' && file[i+1]=='-' && !comments) {
-                comments = true;
-            }
+        auxiliary = file[i];
+        auxiliary2 = "";
+        auxiliary = auxiliary.split(/[\s]+/).filter(function(el, comments) {
+            console.log(commentary.test(el));
+            return (el.length > 0 && !comments)});
+        for (let j = 0; j < auxiliary.length; j++) {
+            auxiliary2 += auxiliary[j] + " ";
         }
+        file[i] = auxiliary2;
     }
 }
 
 function printer() {
     for (let i = 0; i < file.length; i++) {
         consoleDebug.value += file[i] + "\r\n";
-        console.log(file[i]);
     }
+    console.log(file);
 }

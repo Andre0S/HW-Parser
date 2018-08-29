@@ -2,23 +2,23 @@
 let notComment = /[^&*\r\n]/;
 let alphabetical = /[a-z]/i;
 let digits = /\d/;
-let numbers = /-?\d*/;
+let numbers = /^-?\d*$/;
 let carriageReturn = /\r\n/;
-let instructions = /add|and|div|mult|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|push|pop|addi|addiu|beq|bne|ble|bgt|lb|lh|lui|lw|sb|sh|slti|sw|j|jal/i;
-let instructionsR = /add|and|div|mult|jr|mfhi|mflo|sll|sllv|slt|sra|srav|srl|sub|break|rte|push|pop/i;
-let instructionsR3registers = /add|and|sllv|slt|srav|sub/i;
-let instructionsRshamt = /sll|sra|srl/i;
-let instructionsRdivmult = /div|mult/i;
-let instructionsRstoppers = /break|rte/i;
-let instructionsRhilo = /mfhi|mflo/i;
-let instructionsRstack = /push|pop/i;
-let instructionsRjump = /jr/i;
-let instructionsI = /addi|addiu|beq|bne|ble|bgt|lb|lh|lui|lw|sb|sh|slti|sw/i;
-let instructionsIimmediate = /addi|addiu|slti/i;
-let instructionsIbranch = /beq|bne|ble|bgt/i;
-let instructionsIloadstore = /lb|lh|lw|sb|sh|sw/i;
-let instructionsIlui = /lui/i;
-let instructionsJ = /j|jal/i;
+let instructions = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$|^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$|^j$|^jal$/i;
+let instructionsR = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$/i;
+let instructionsR3registers = /^add$|^and$|^sllv$|^slt$|^srav$|^sub$/i;
+let instructionsRshamt = /^sll$|^sra$|^srl$/i;
+let instructionsRdivmult = /^div$|^mult$/i;
+let instructionsRstoppers = /^break$|^rte$/i;
+let instructionsRhilo = /^mfhi$|^mflo$/i;
+let instructionsRstack = /^push$|^pop$/i;
+let instructionsRjump = /^jr$/i;
+let instructionsI = /^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$/i;
+let instructionsIimmediate = /^addi$|^addiu$|^slti$/i;
+let instructionsIbranch = /^beq$|^bne$|^ble$|^bgt$/i;
+let instructionsIloadstore = /^lb$|^lh$|^lw$|^sb$|^sh$|^sw$/i;
+let instructionsIlui = /^lui$/i;
+let instructionsJ = /^j$|^jal$/i;
 let commentLine = /&&.*/;
 let commentBlock = /\*&(.|\r\n)*&\*/;
 let codes = [
@@ -58,6 +58,9 @@ let codes = [
     {name:"j" , code: "000010"},
     {name:"jal" , code: "000011"}];
 
+let temporary = [];
+let output = "";
+
 let position;
 let archive;
 let archiveLength;
@@ -78,76 +81,85 @@ function getNextToken() {
     let star = false;
     let alphabet = false;
     let number = false;
+    let negative = false;
     let actualChar = '';
     let actualToken = '';
     while (position <= archiveLength) {
         actualChar = archive[position];
-        if (actualChar == '*' || actualChar == '&') {
-            while (position < archiveLength && !((commentLine || commentStar) && commentEnd)) {
-                actualChar = archive[position];
-                if (actualChar == '*') {
-                    actualToken += '*';
-                    if (commAnd) {
-                        if (commentStar) {
-                            commentEnd = true;
-                            commAnd = false;
-                            position++;
-                            if (position < archiveLength -3) {
-                                if (carriageReturn.test(archive[position] + archive[position+1])) {
-                                    line++;
-                                    position += 2;
+        if (actualChar == '-' && !negative && actualToken == '') {
+            actualToken += '-';
+            position++;
+            negative = true;
+        } else if (actualChar == '*' || actualChar == '&') {
+            if(!negative) {
+                while (position < archiveLength && !((commentLine || commentStar) && commentEnd)) {
+                    actualChar = archive[position];
+                    if (actualChar == '*') {
+                        actualToken += '*';
+                        if (commAnd) {
+                            if (commentStar) {
+                                commentEnd = true;
+                                commAnd = false;
+                                position++;
+                                if (position < archiveLength -3) {
+                                    if (carriageReturn.test(archive[position] + archive[position+1])) {
+                                        line++;
+                                        position += 2;
+                                    }
                                 }
+                                return actualToken;
+                            } else if (!commentStar && !commentLine) {
+                                throw "Comment in wrong place, lacks an initial '*&' on line " + line;
                             }
-                            return actualToken;
-                        } else if (!commentStar && !commentLine) {
-                            throw "Comment in wrong place, lacks an initial '*&' on line " + line;
-                        }
-                    } else {
-                        if (!commentStar) {
-                            position++;
-                            star = true;
-                        }
-                    }
-                } else if (actualChar == '&') {
-                    position++;
-                    actualToken += '&';
-                    if (commAnd) {
-                        if (!commentStar && !commentLine) {
-                            commentLine = true;
-                            commAnd = false;
-                        }
-                    } else if (star) {
-                        if (!commentStar && !commentLine) {
-                            commentStar = true;
-                            star = false;
-                        }
-                    } else {
-                        commAnd = true;
-                    }
-                } else if (notComment.test(actualChar)){
-                    position++;
-                    actualToken += actualChar;
-                    if (star) {
-                        if (commentStar) {
-                            star = false;
                         } else {
-                            star = false;
-                            throw "Comment malformed, lacks a '&' after a '*', on line " + line;
+                            if (!commentStar) {
+                                position++;
+                                star = true;
+                            }
                         }
-                    } else if (commAnd) {
-                        if (!commentStar) {
-                            throw "Comment malformed, lacks a '&' to form a comment line on line " + line;
+                    } else if (actualChar == '&') {
+                        position++;
+                        actualToken += '&';
+                        if (commAnd) {
+                            if (!commentStar && !commentLine) {
+                                commentLine = true;
+                                commAnd = false;
+                            }
+                        } else if (star) {
+                            if (!commentStar && !commentLine) {
+                                commentStar = true;
+                                star = false;
+                            }
+                        } else {
+                            commAnd = true;
                         }
-                    }
-                } else if (carriageReturn.test(actualChar + archive[position+1])){
-                    position += 2;
-                    actualToken += "\r\n";
-                    line++;
-                    if (commentLine){
-                        commentEnd = true;
-                        return actualToken;
+                    } else if (notComment.test(actualChar)){
+                        position++;
+                        actualToken += actualChar;
+                        if (star) {
+                            if (commentStar) {
+                                star = false;
+                            } else {
+                                star = false;
+                                throw "Comment malformed, lacks a '&' after a '*', on line " + line;
+                            }
+                        } else if (commAnd) {
+                            if (!commentStar) {
+                                throw "Comment malformed, lacks a '&' to form a comment line on line " + line;
+                            }
+                        }
+                    } else if (carriageReturn.test(actualChar + archive[position+1])){
+                        position += 2;
+                        actualToken += "\r\n";
+                        line++;
+                        if (commentLine){
+                            commentEnd = true;
+                            return actualToken;
+                        }
                     }
                 }
+            } else {
+                throw "Illegal '-' at line " + line + ", out of comment or negative number.";
             }
         } else if (carriageReturn.test(actualChar + archive[position+1])){
             line++;
@@ -155,18 +167,22 @@ function getNextToken() {
             return actualToken;
         } else {
             if (alphabetical.test(actualChar)){
-                if (alphabet) {
-                    actualToken += actualChar;
-                    position++;
-                } else if (number) {
-                    throw "Lacks a space between number and word at line " + line;
+                if(!negative) {
+                    if (alphabet) {
+                        actualToken += actualChar;
+                        position++;
+                    } else if (number) {
+                        throw "Lacks a space between number and word at line " + line;
+                    } else {
+                        actualToken += actualChar;
+                        alphabet = true;
+                        position++;
+                    }
+                    if (position == archiveLength) {
+                        return actualToken;
+                    }
                 } else {
-                    actualToken += actualChar;
-                    alphabet = true;
-                    position++;
-                }
-                if (position == archiveLength) {
-                    return actualToken;
+                    throw "Illegal '-' at line " + line + ", out of comment or negative number.";
                 }
             } else if (digits.test(actualChar)) {
                 if (number) {
@@ -186,6 +202,7 @@ function getNextToken() {
                 position++;
                 number = false;
                 alphabet = false;
+                negative = false;
                 return actualToken;
             } else {
                 throw "Illegal character at line " + line + ", out of comment.";
@@ -206,13 +223,10 @@ function getCommandFromToken() {
     let shamt = '';
     let offset = '';
     let InstructionInitiated = false;
-    let instructionFinished = false;
     let instructionCounter = 0;
     while (position < archiveLength) {
         try{
             Token = getNextToken();
-            console.log(returner);
-            console.log(temp);
         } catch (err) {
             throw err;
         }
@@ -260,7 +274,7 @@ function getCommandFromToken() {
                     type = "J";
                 }
                 InstructionInitiated = true;
-            } else if (numbers.test(Token)) {
+            } else if (numbers.test(Token) && InstructionInitiated) {
                 let str_numb = parseInt(Token);
                 switch (type) {
                     case "R3registers":
@@ -410,6 +424,218 @@ function getCommandFromToken() {
                             throw "Register cannot be a negative number, got " + Token + ", at line " + line;
                         }
                         break;
+                    case "Iimmediate":
+                        switch (instructionCounter) {
+                            case 0:
+                                if (str_numb > -1) {
+                                    try {
+                                        rt = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RT at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 1:
+                                if (str_numb > -1) {
+                                    try {
+                                        rs = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RS at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 2:
+                                if (str_numb > -1) {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,false);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too big.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += rs + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                } else {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,true);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too negative.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += rs + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                }
+                                break;
+                        }
+                        break;
+                    case "Ibranch":
+                        switch (instructionCounter) {
+                            case 0:
+                                if (str_numb > -1) {
+                                    try {
+                                        rs = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RS at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 1:
+                                if (str_numb > -1) {
+                                    try {
+                                        rt = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RT at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 2:
+                                if (str_numb > -1) {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,false);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too big.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += rs + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                } else {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,true);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too negative.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += rs + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                }
+                                break;
+                        }
+                        break;
+                    case "Iloadstore":
+                        switch (instructionCounter) {
+                            case 0:
+                                if (str_numb > -1) {
+                                    try {
+                                        rt = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RT at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 1:
+                                if (str_numb > -1) {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,false);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too big.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    try {
+                                        offset = toBinaryImmediate(str_numb,16,true);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too negative.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                }
+                                break;
+                            case 2:
+                                if (str_numb > -1) {
+                                    try {
+                                        rt = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RT at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += rs + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                        }
+                        break;
+                    case "Ilui":
+                        switch (instructionCounter) {
+                            case 0:
+                                if (str_numb > -1) {
+                                    try {
+                                        rt = toBinaryNumber(str_numb,5);
+                                    } catch (err) {
+                                        throw err + " for RT at line " + line;
+                                    }
+                                    temp += ' ' + str_numb;
+                                    instructionCounter++;
+                                } else {
+                                    throw "Register cannot be a negative number, got " + Token + ", at line " + line;
+                                }
+                                break;
+                            case 1:
+                                if (str_numb > -1) {
+                                    try {
+                                        offset = toBinaryNumber(str_numb,16);
+                                    } catch (err) {
+                                        throw err + " for OFFSET at line " + line + ", number too big.";
+                                    }
+                                    temp += ' ' + str_numb;
+                                    returner += "00000" + rt + offset;
+                                    instructionCounter++;
+                                    return returner+"&"+temp;
+                                } else {
+                                    throw "Expecting an unsigned integer, got this " + Token + " instead, at line " + line;
+                                }
+                                break;
+                        }
+                        break;
+                    case "J":
+                        if (str_numb > -1) {
+                            try {
+                                offset = toBinaryImmediate(str_numb,28,false);
+                            } catch (err) {
+                                throw err + " for OFFSET at line " + line + ", number too big.";
+                            }
+                            temp += ' ' + str_numb;
+                            returner += offset;
+                            instructionCounter++;
+                            return returner+"&"+temp;
+                        } else {
+                            try {
+                                offset = toBinaryImmediate(str_numb,28,true);
+                            } catch (err) {
+                                throw err + " for OFFSET at line " + line + ", number too negative.";
+                            }
+                            temp += ' ' + str_numb;
+                            returner += offset;
+                            instructionCounter++;
+                            return returner+"&"+temp;
+                        }
+                        break;
                 }
             } else {
                 if (!InstructionInitiated) {
@@ -459,4 +685,74 @@ function toBinaryNumber(number,size) {
         } while (exponenciator >= 0);
         return auxiliary;
     }
+}
+
+function toBinaryImmediate(number,size,negative) {
+    if (negative) {
+        if ((number * -1) > (2**(size-1))) {
+            throw "Invalid number";
+        } else {
+            let auxiliary = "1";
+            let temp='';
+            let auxiliary2 = number * -1;
+            let exponenciator = size - 2;
+            do {
+                if (isPartOfBinaryCode(auxiliary2, 2 ** exponenciator)) {
+                    auxiliary += "1";
+                } else {
+                    auxiliary += "0";
+                }
+                auxiliary2 = auxiliary2 % (2 ** exponenciator);
+                exponenciator--;
+            } while (exponenciator >= 0);
+            let firstOne = false;
+            for (let i = auxiliary.length -1; i > -1; i--) {
+                if (!firstOne) {
+                    if (auxiliary[i]==1){
+                        firstOne = true;
+                        temp = '1' + temp;
+                    } else {
+                        temp = '0' + temp;
+                    }
+                } else {
+                    if (auxiliary[i]==1){
+                        temp = '0' + temp;
+                    } else if (auxiliary[i]==0){
+                        temp = '1' + temp;
+                    }
+                }
+            }
+            return temp;
+        }
+    } else {
+        if (number > ((2**(size -1)) - 1)) {
+            throw "Invalid number";
+        } else {
+            let auxiliary = "0";
+            let auxiliary2 = number;
+            let exponenciator = size - 2;
+            do {
+                if (isPartOfBinaryCode(auxiliary2, 2 ** exponenciator)) {
+                    auxiliary += "1";
+                } else {
+                    auxiliary += "0";
+                }
+                auxiliary2 = auxiliary2 % (2 ** exponenciator);
+                exponenciator--;
+            } while (exponenciator >= 0);
+            return auxiliary;
+        }
+    }
+
+}
+
+function buildArrayOfInstructions() {
+    try {
+        while (position < archiveLength) {
+            temporary.push(getCommandFromToken());
+        }
+    } catch (err) {
+        throw err;
+    }
+    temporary = temporary.filter(function(el) {return el !== (undefined || null || "")});
 }

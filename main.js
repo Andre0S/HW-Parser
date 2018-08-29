@@ -1,7 +1,5 @@
 
 let file = undefined;
-let temporary = undefined;
-let output = "";
 
 let commentary = /--.*/;
 
@@ -54,8 +52,8 @@ function main() {
     consoleDebug.value = '';
     initialize(file);
     try {
-        console.log(getCommandFromToken());
-        console.log(getCommandFromToken());
+        console.log(toBinaryImmediate(-1,16,true));
+        buildArrayOfInstructions();
     } catch (err) {
         console.log(err);
     }

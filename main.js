@@ -1,11 +1,9 @@
 
 let file = undefined;
-let temporary = "";
+let temporary = undefined;
 let output = "";
 
-let alphabetical = /([a-z]|[A-Z])+/;
-let digits = /([0-9])+/;
-let commentary = /"--".*/;
+let commentary = /--.*/;
 
 let startEnabled = false;
 let downloadEnabled = false;
@@ -54,9 +52,19 @@ btnStart.addEventListener('click', function() {
 
 function main() {
     consoleDebug.value = '';
-    file = file.split(/[\r\n]+/).filter(function(el) {return (el.length > 0)});
+    initialize(file);
+    try {
+        console.log(getCommandFromToken());
+        console.log(getCommandFromToken());
+    } catch (err) {
+        console.log(err);
+    }
+    /*file = file.split(/\r\n/);
+    print(file.length);
     removeComments();
-    printer();
+    console.log(toBinaryNumber(128,16));
+    console.log(toBinaryNumber(28,5));
+    printer();*/
 }
 
 function removeComments() {
@@ -67,19 +75,143 @@ function removeComments() {
         comments = false;
         auxiliary = file[i];
         auxiliary2 = "";
-        auxiliary = auxiliary.split(/[\s]+/).filter(function(el, comments) {
-            console.log(commentary.test(el));
-            return (el.length > 0 && !comments)});
+        auxiliary = auxiliary.split(/\s+/).filter(function(el) {return (el.length > 0)});
         for (let j = 0; j < auxiliary.length; j++) {
-            auxiliary2 += auxiliary[j] + " ";
+            if (!comments) {
+                if (!commentary.test(auxiliary[j])) {
+                    auxiliary2 += auxiliary[j] + " ";
+                } else {
+                    comments = true;
+                }
+            }
         }
         file[i] = auxiliary2;
     }
+}
+
+function checkInstructions(instruction) {
+    let temp = undefined;
+    let opcode_funct = "";
+    temp = instruction.split(/\s+/);
+    let returner = "";
+    if (temp.length>0) {
+        if (instructionsR.test(temp[0])){
+            for (let i = 0; i < formatR.length; i++) {
+                if (formatR[i].name == temp[0]){
+                    opcode_funct = formatR[i].funct;
+                    i = formatR.length;
+                }
+            }
+            switch (temp[0]) {
+                case "add":
+                case "and":
+                case "sllv":
+                case "slt":
+                case "srav":
+                case "sub":
+                    returner += "000000";
+                    if (temp[2]) {
+                        try {
+                            returner += toBinaryNumber(temp[2],5);
+                        } catch (err) {
+                            throw err;
+                        }
+                        if (temp[3]) {
+                            try {
+                                returner += toBinaryNumber(temp[3],5);
+                            } catch (err) {
+                                throw err;
+                            }
+                            if (temp[1]) {
+                                try {
+                                    returner += toBinaryNumber(temp[1],5) + "00000" + opcode_funct;
+                                } catch (err) {
+                                    throw err;
+                                }
+                            } else {
+                                throw "Lack of RD register";
+                            }
+                        } else {
+                            throw "Lack of RT register";
+                        }
+                    } else {
+                        throw "Lack of RS register";
+                    }
+                    break;
+                case "sll":
+                case "sra":
+                case "srl":
+                    returner += "000000";
+                    if (temp[2]) {
+                        try {
+                            returner += "00000" + toBinaryNumber(temp[2],5);
+                        } catch (err) {
+                            throw err;
+                        }
+                        if (temp[1]) {
+                            try {
+                                returner += toBinaryNumber(temp[1],5);
+                            } catch (err) {
+                                throw err;
+                            }
+                            if (temp[3]) {
+                                try {
+                                    returner += toBinaryNumber(temp[3],5) + opcode_funct;
+                                } catch (err) {
+                                    throw err;
+                                }
+                            } else {
+                                throw "Lack of Shamt";
+                            }
+                        } else {
+                            throw "Lack of RD register";
+                        }
+                    } else {
+                        throw "Lack of RT register";
+                    }
+                    break;
+                case "div":
+                case "mult":
+                    returner += "000000";
+                    if (temp[1]) {
+                        try {
+                            returner += toBinaryNumber(temp[1],5);
+                        } catch (err) {
+                            throw err;
+                        }
+                        if (temp[2]) {
+                            try {
+                                returner += toBinaryNumber(temp[2],5);
+                            } catch (err) {
+                                throw err;
+                            }
+                        } else {
+                            throw "Lack of RT register";
+                        }
+                    } else {
+                        throw "Lack of RS register";
+                    }
+                    break;
+            }
+        } else if (instructionsI.test(temp[0])){
+
+        } else if (instructionsJ.test(temp[0])){
+
+        } else {
+            throw "Error, not in set of instructions."
+        }
+    }
+    return returner;
+}
+
+
+
+function print(str) {
+    consoleDebug.value += str + "\r\n";
 }
 
 function printer() {
     for (let i = 0; i < file.length; i++) {
         consoleDebug.value += file[i] + "\r\n";
     }
-    console.log(file);
 }

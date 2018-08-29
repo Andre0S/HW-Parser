@@ -692,7 +692,7 @@ function toBinaryImmediate(number,size,negative) {
         if ((number * -1) > (2**(size-1))) {
             throw "Invalid number";
         } else {
-            let auxiliary = "1";
+            let auxiliary = "0";
             let temp='';
             let auxiliary2 = number * -1;
             let exponenciator = size - 2;
@@ -755,4 +755,119 @@ function buildArrayOfInstructions() {
         throw err;
     }
     temporary = temporary.filter(function(el) {return el !== (undefined || null || "")});
+}
+
+function createOutput() {
+    output = "DEPTH = " + (temporary.length * 4) + ";\nWIDTH = 8;\n\nADDRESS_RADIX = DEC;\nDATA_RADIX = BIN;\nCONTENT\nBEGIN\n\n";
+    let byte = 0;
+    let temp = undefined;
+    let auxiliary = "";
+    for (let i = 0; i < temporary.length; i++){
+        temp = temporary[i].split(/&/);
+        auxiliary = getNumberOfByte(byte) + " : " + temp[0].substr(0,8) + "; --" +temp[1] + "\n" + getNumberOfByte(byte+1) + " : " + temp[0].substr(8,8) + ";\n"
+            + getNumberOfByte(byte+2) + " : " + temp[0].substr(16,8) + ";\n" + getNumberOfByte(byte+3) + " : " + temp[0].substr(24,8) + ";\n\n";
+        output += auxiliary;
+        byte += 4;
+    }
+    output += "END;\n"
+}
+
+function getNumberOfByte(byte) {
+    if (byte<10){
+        return "00"+byte;
+    } else if (byte >= 10 && byte < 100) {
+        return "0" +byte;
+    } else if (byte>=100) {
+        return ""+byte;
+    }
+}
+
+let file = undefined;
+
+let startEnabled = false;
+let downloadEnabled = false;
+
+let loader = document.getElementById("file_exchanger");
+let btnLoad = document.getElementById("loadbtn");
+let btnStart = document.getElementById("startbtn");
+let btnDownload = document.getElementById("downloadbtn");
+let consoleBG = document.getElementById("debugger");
+let consoleDebug = document.getElementById("console");
+
+loader.addEventListener('change', function(evt) {
+    let code_file = evt.target.files[0];
+
+    if (code_file) {
+        let reader1 = new FileReader();
+        reader1.onload = function() {
+            file = reader1.result;
+        }
+        reader1.readAsText(code_file);
+        btnStart.className = 'btn';
+        startEnabled = true;
+    } else {
+        alert("Failed to load file");
+    }
+});
+
+btnLoad.addEventListener('click',function() {
+    startEnabled = false;
+    downloadEnabled = false;
+    btnStart.className = 'btn_disabled';
+    btnDownload.className = 'btn_disabled';
+    consoleBG.className = 'console_disabled';
+    consoleDebug.className = 'console_disabled';
+    loader.click();
+});
+
+btnStart.addEventListener('click', function() {
+    if(startEnabled) {
+        consoleBG.className = 'console_enabled';
+        consoleDebug.className = 'console_enabled';
+        if (main()) {
+            btnDownload.className = 'btn';
+            downloadEnabled = true;
+        }
+    }
+});
+
+btnDownload.addEventListener('click', function () {
+    if (downloadEnabled) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(output));
+        element.setAttribute('download', 'instructions.mif');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+
+        startEnabled = false;
+        downloadEnabled = false;
+        btnStart.className = 'btn_disabled';
+        btnDownload.className = 'btn_disabled';
+        consoleBG.className = 'console_disabled';
+        consoleDebug.className = 'console_disabled';
+        consoleDebug.value = '';
+    }
+});
+
+function main() {
+    consoleDebug.value = '';
+    initialize(file);
+    try {
+        buildArrayOfInstructions();
+        createOutput();
+    } catch (err) {
+        print(err);
+    }
+    print("Success, your file was converted:");
+    print(output);
+    return true;
+}
+
+function print(str) {
+    consoleDebug.value += str + "\r\n";
 }

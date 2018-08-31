@@ -20,7 +20,7 @@ let instructionsIloadstore = /^lb$|^lh$|^lw$|^sb$|^sh$|^sw$/i;
 let instructionsIlui = /^lui$/i;
 let instructionsJ = /^j$|^jal$/i;
 let commentLine = /&&.*/;
-let commentBlock = /\*&(.|\r\n)*&\*/;
+let commentBlock = /\*&(.|\r\n|\r|\n)*&\*/;
 let codes = [
     {name:"add" , code: "100000"},
     {name:"and" , code: "100100"},

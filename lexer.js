@@ -871,3 +871,18 @@ function main() {
 function print(str) {
     consoleDebug.value += str + "\r\n";
 }
+
+let original_px_ratio = window.devicePixelRatio || window.screen.availWidth / document.documentElement.clientWidth;
+let px_ratio = window.devicePixelRatio || window.screen.availWidth / document.documentElement.clientWidth;
+let zoom = 1;
+let html = document.getElementsByTagName('html')[0];
+
+window.addEventListener('resize', function () {
+    let newPx_ratio = window.devicePixelRatio || window.screen.availWidth / document.documentElement.clientWidth;
+    if(newPx_ratio != px_ratio){
+        zoom = newPx_ratio / original_px_ratio;
+        px_ratio = newPx_ratio;
+        html.style.setProperty('--originalzoom',zoom);
+        return true;
+    }
+});

@@ -764,12 +764,12 @@ function createOutput() {
     let auxiliary = "";
     for (let i = 0; i < temporary.length; i++){
         temp = temporary[i].split(/&/);
-        auxiliary = getNumberOfByte(byte) + " : " + temp[0].substr(0,8) + "; --" +temp[1] + "\n" + getNumberOfByte(byte+1) + " : " + temp[0].substr(8,8) + ";\n"
-            + getNumberOfByte(byte+2) + " : " + temp[0].substr(16,8) + ";\n" + getNumberOfByte(byte+3) + " : " + temp[0].substr(24,8) + ";\n\n";
+        auxiliary = getNumberOfByte(byte) + " : " + temp[0].substr(24,8) + "; --" +temp[1] + "\n" + getNumberOfByte(byte+1) + " : " + temp[0].substr(16,8) + ";\n"
+            + getNumberOfByte(byte+2) + " : " + temp[0].substr(8,8) + ";\n" + getNumberOfByte(byte+3) + " : " + temp[0].substr(0,8) + ";\n\n";
         output += auxiliary;
         byte += 4;
     }
-    output += "END;\n"
+    output += "END;"
 }
 
 function getNumberOfByte(byte) {
@@ -862,6 +862,7 @@ function main() {
         createOutput();
     } catch (err) {
         print(err);
+        return false;
     }
     print("Success, your file was converted:");
     print(output);

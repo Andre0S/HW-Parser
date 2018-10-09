@@ -88,7 +88,6 @@ function getNextToken(){
             return actualToken;
         }
         actualChar = archive[position];
-        console.log(actualChar);
         if (actualChar == '-' && !negative && actualToken == '') {
             actualToken += actualChar;
             position++;
@@ -334,7 +333,6 @@ function getCommandFromToken() {
         } catch (err) {
             throw err;
         }
-        console.log(Token);
         if (!commentBlock.test(Token) && !commentLine.test(Token)) {
             if (instructions.test(Token) && !InstructionInitiated) {
                 opcode_funct = getCode(Token);

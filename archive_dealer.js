@@ -27,6 +27,8 @@ loader.addEventListener('change', function(evt) {
 });
 
 btnLoad.addEventListener('click',function() {
+    loader.value = '';
+    consoleDebug.value = '';
     startEnabled = false;
     downloadEnabled = false;
     btnStart.className = 'btn_disabled';
@@ -43,6 +45,8 @@ btnStart.addEventListener('click', function() {
         if (main()) {
             btnDownload.className = 'btn';
             downloadEnabled = true;
+            startEnabled= false;
+            btnStart.className = 'btn_disabled';
         }
     }
 });

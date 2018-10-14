@@ -23,18 +23,10 @@ body {
     margin-right: auto;
     position: sticky;
     display: grid;
-    grid-template-columns: auto calc(0.325 * var(--height)) calc(0.15 * var(--height)) calc(0.15 * var(--height)) calc(0.15 * var(--height)) calc(0.025 * var(--height)) auto;
-    grid-template-areas: ". . home parser contnt . .";
+    grid-template-columns: auto calc(0.325 * var(--height)) calc(0.45 * var(--height)) calc(0.025 * var(--height)) auto;
+    grid-template-areas: ". . contnt . .";
     background: linear-gradient(0deg, #777777, #aaaaaa);
     z-index: 2;
-}
-
-#homebtn{
-    grid-area: home;
-}
-
-#parserbtn{
-    grid-area: parser;
 }
 
 #contentbtn{
@@ -58,8 +50,8 @@ body {
     background: linear-gradient(20deg, #f0f0f0, #fafafa);
     box-shadow: 0vw 0vh 1vw rgba(40,40,40,0.5);
     display: grid;
-    grid-template-rows: calc(0.05 * var(--height)) calc(0.15 * var(--height)) calc(0.05 * var(--height)) calc(0.25 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.58 * var(--height));
-    grid-template-areas: "." "title" "." "microchip" "." "loadbtn" "." "startbtn" "." "downloadbtn" ".";
+    grid-template-rows: calc(0.05 * var(--height)) calc(0.15 * var(--height)) calc(0.05 * var(--height)) calc(0.25 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.10 * var(--height)) calc(0.47 * var(--height));
+    grid-template-areas: "." "title" "." "microchip" "." "loadbtn" "." "startbtn" "." "downloadbtn" "." "infobtn" ".";
     justify-items: center;
     align-items: center;
 }
@@ -127,6 +119,30 @@ body {
 
 #downloadbtn {
     grid-area: downloadbtn;
+}
+
+#info_btn {
+    grid-area: infobtn;
+    background: linear-gradient(0deg,#333333,#555555);
+    border: none;
+    font-size: calc(0.06 * var(--height));
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    opacity: 0.75;
+    border-radius: calc(0.06 * var(--height));
+    width: calc(0.1 * var(--height));
+}
+
+#info_btn:hover {
+    opacity: 1;
+}
+
+#info_btn:focus {
+    outline: none;
+    opacity: 1;
 }
 
 #debugger {
@@ -229,4 +245,54 @@ body {
     background: linear-gradient(0deg, #555555, #999999);
     color: #ffffff;
     opacity: 0.75;
+}
+
+#info_section {
+    grid-area: 1 / 2 / 4 /3;
+    z-index: 4;
+    visibility: hidden;
+    align-self: center;
+    justify-self: center;
+    height: calc(0.8 * var(--height));
+    width: calc(0.7 * var(--height));
+    background: linear-gradient(0deg, rgba(15,15,15,0.9), rgba(22,22,22,0.9));
+    border-radius: calc(0.1 * var(--height));
+}
+
+#info_section h1 {
+    font-size: calc(0.05 * var(--height));
+    margin: 0;
+    text-align: center;
+    color: #f9f9f9;
+}
+
+#info_section p {
+    font-size: calc(0.02 * var(--height));
+    margin: calc(0.02 * var(--height));
+    text-align: justify;
+    color: #f9f9f9;
+}
+
+#info_section button {
+    grid-area: infobtn;
+    margin-left: calc(0.27 * var(--height));
+    background: linear-gradient(0deg,#333333,#555555);
+    border: none;
+    font-size: calc(0.02 * var(--height));
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 0.75;
+    border-radius: calc(0.04 * var(--height));
+    height: calc(0.06 * var(--height));
+    width: calc(0.16 * var(--height));
+}
+
+#info_section button:hover {
+    opacity: 1;
+}
+
+#info_section button:focus {
+    opacity: 1;
+    outline: 0;
 }

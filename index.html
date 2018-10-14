@@ -11,10 +11,31 @@
 </head>
 <body>
 <header id="above_menu">
-    <button class="nav_btn" id="homebtn" >Home</button>
-    <button class="nav_btn" id="parserbtn" >Parser</button>
     <button class="nav_btn" id="contentbtn" >Content</button>
 </header>
+<div id="info_section">
+    <h1>Info</h1>
+    <p>Write your instructions without ';' at the end and ',' between values, and use the value of the register (0 -> 31) to assign the register you want.<br>
+    Example of instruction:<br>
+    => addi 20 22 -152<br>
+    instead of:<br>
+    => addi $s4, $s6, -152;<br><br><br>
+    Comments ARE allowed!<br><br>
+    '&&' for comment line.<br>
+    Example:<br>
+    => addi 20 22 -152 && Should have 32 in register 20<br>
+    The part "&& Should have 32 in register 20" will be ignored.<br><br>
+    '*&' for beginning of comment block and '&*' for the end of it.<br>
+    Example:<br>
+    => addi 20 22 -128 *& Should have 32 in register 20<br>
+    We tested it before, but addi isn't functioning well!<br>
+    So we preferred to use this shift&* sll 20 20 5<br>
+    The part "*& Should have 32 in register 20<br>
+        We tested it before, but addi isn't functioning well!<br>
+        So we preferred to use this shift&*" will be ignored.<br><br>
+    COMMENTS ARE STILL IN TEST PHASE, BUT FOR 90% OF CASES ARE WORKING!</p>
+    <button id="close_btn">CLOSE</button>
+</div>
 <div id="body">
     <div id="left_menu">
         <p>Infra-HW<br>Ciência da<br>Computação<br>Parser</p>
@@ -22,6 +43,7 @@
         <button class="btn" id="loadbtn" >Load</button>
         <button class="btn_disabled" id="startbtn" >Start</button>
         <button class="btn_disabled" id="downloadbtn" >Download</button>
+        <button id="info_btn">?</button>
         <svg version="1.1" id="microchip" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
         <path id="microchip" d="M590.2,175.4c5.4,0,9.8-4.4,9.8-9.8c0-5.4-4.4-9.8-9.8-9.8h-45.3v-10.5h45.3c5.4,0,9.8-4.4,9.8-9.8

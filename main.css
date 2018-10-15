@@ -1,79 +1,75 @@
 html {
     min-height: 100%;
     --height : 1080px;
+    background: #1b242d;
+    display: grid;
+    grid-template-columns: auto var(--height) auto;
+    grid-template-areas: ". body .";
 }
 
 body {
+    grid-area: body;
     margin: 0;
     padding: 0;
     border: 0;
-    min-height: 100%;
-    background: linear-gradient(20deg, #555555, #777777);
+    min-height: var(--height);
+    background: radial-gradient(circle 45vh at center, #8eb1c5 0%, #577991 25% , #2d3d4d 65% , #1b242d 100%);
     display: grid;
-    grid-template-columns: auto calc(0.8 * var(--height)) auto;
-    grid-template-rows: calc(0.05 * var(--height)) calc(0.9 * var(--height)) calc(0.05 * var(--height));
-    grid-template-areas: ". top ." ". center ." " . bottom .";
+    grid-template-columns: calc(0.3 * var(--height)) calc(0.7 * var(--height));
+    grid-template-rows: calc(0.1 * var(--height)) calc(0.5 * var(--height)) calc(0.2 * var(--height)) auto calc(0.05 * var(--height));
+}
+
+#buses {
+    grid-area: 1 / 1 / 3 / 2;
+    width: calc(0.3 * var(--height));
 }
 
 #above_menu {
-    grid-area: 1 / 1 / 2 / 4;
-    width: 100%;
-    height: calc(0.05 * var(--height));
-    margin-left: auto;
-    margin-right: auto;
+    grid-area: 1 / 1 / 2 / 3;
+    width: 100vw;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
     position: sticky;
     display: grid;
-    grid-template-columns: auto calc(0.325 * var(--height)) calc(0.45 * var(--height)) calc(0.025 * var(--height)) auto;
-    grid-template-areas: ". . contnt . .";
-    background: linear-gradient(0deg, #777777, #aaaaaa);
-    z-index: 2;
-}
-
-#contentbtn{
-    grid-area: contnt;
-}
-
-#body {
-    grid-area: 1 / 2 / 4 / 3;
-    display: grid;
-    width: calc(0.8 * var(--height));
-    height: var(--height);
-    grid-template-columns: calc(0.3 * var(--height)) calc(0.5 * var(--height));
-    grid-template-areas: "leftmenu rightdebugger";
-}
-
-#left_menu {
+    grid-template-columns: auto calc(0.08 * var(--height)) calc(0.02 * var(--height)) calc(0.4 * var(--height)) calc(0.03 * var(--height)) calc(0.13 * var(--height)) calc(0.13 * var(--height)) calc(0.13 * var(--height)) auto;
+    grid-template-areas: ". hwsymbol . title . loadbtn startbtn downloadbtn .";
+    background: linear-gradient(0deg, #1b242d, #2d3d4d);
+    box-shadow: 0vw 0vh 1vw rgba(15,15,15,0.5);
     z-index: 3;
-    grid-area: leftmenu;
-    width: calc(0.3 * var(--height));
-    height: var(--height);
-    background: linear-gradient(20deg, #f0f0f0, #fafafa);
-    box-shadow: 0vw 0vh 1vw rgba(40,40,40,0.5);
-    display: grid;
-    grid-template-rows: calc(0.05 * var(--height)) calc(0.15 * var(--height)) calc(0.05 * var(--height)) calc(0.25 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.05 * var(--height)) calc(0.01 * var(--height)) calc(0.10 * var(--height)) calc(0.47 * var(--height));
-    grid-template-areas: "." "title" "." "microchip" "." "loadbtn" "." "startbtn" "." "downloadbtn" "." "infobtn" ".";
-    justify-items: center;
-    align-items: center;
 }
 
-#left_menu p {
-    grid-area: title;
-    font-size: calc(0.03 * var(--height));
-    text-align: center;
-    color: #333333;
-}
-
-#microchip {
-    grid-area: microchip;
-    fill: #333333;
-    width: calc(0.25 * var(--height));
-    height: auto;
-    justify-self: center;
+#hw_symbol {
+    grid-area: hwsymbol;
+    width: calc(0.06 * var(--height));
     align-self: center;
+    justify-self: center;
+}
+
+#above_menu h1 {
+    grid-area: title;
+    margin: 0;
+    margin-top: calc(0.02 * var(--height));
+    font-size: calc(0.05 * var(--height));
+    font-weight: 100;
+    text-align: left;
+    color: #ffffff;
+}
+
+#loadbtn {
+    grid-area: loadbtn;
+}
+
+#startbtn {
+    grid-area: startbtn;
+}
+
+#downloadbtn {
+    grid-area: downloadbtn;
 }
 
 .btn_disabled {
-    background: linear-gradient(0deg,#333333,#555555);
+    background: linear-gradient(0deg, #1b242d, #2d3d4d);
     border: none;
     font-size: calc(0.03 * var(--height));
     color: #ffffff;
@@ -89,7 +85,7 @@ body {
 }
 
 .btn {
-    background: linear-gradient(0deg,#333333,#555555);
+    background: linear-gradient(0deg, #1b242d, #2d3d4d);
     border: none;
     font-size: calc(0.03 * var(--height));
     color: #ffffff;
@@ -98,10 +94,16 @@ body {
     width: 100%;
     height: 100%;
     opacity: 0.75;
+    -webkit-transition-duration: 0.6s;
+    -moz-transition-duration: 0.6s;
+    -ms-transition-duration: 0.6s;
+    -o-transition-duration: 0.6s;
+    transition-duration: 0.6s;
 }
 
 .btn:hover {
     opacity: 1;
+    background: #ff4d4d;
 }
 
 .btn:focus {
@@ -109,70 +111,56 @@ body {
     opacity: 1;
 }
 
-#loadbtn {
-    grid-area: loadbtn;
-}
-
-#startbtn {
-    grid-area: startbtn;
-}
-
-#downloadbtn {
-    grid-area: downloadbtn;
+#info_img {
+    grid-area: 3 / 1 / 4 / 2;
+    width: calc(0.1 * var(--height));
+    align-self: center;
+    justify-self: center;
+    transition-duration: 0.6s;
 }
 
 #info_btn {
-    grid-area: infobtn;
-    background: linear-gradient(0deg,#333333,#555555);
-    border: none;
-    font-size: calc(0.06 * var(--height));
-    color: #ffffff;
-    cursor: pointer;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    opacity: 0.75;
-    border-radius: calc(0.06 * var(--height));
+    grid-area: 3 / 1 / 4 / 2;
     width: calc(0.1 * var(--height));
+    align-self: center;
+    justify-self: center;
+    transition-duration: 0.6s;
 }
 
 #info_btn:hover {
-    opacity: 1;
+    width: calc(0.15 * var(--height));
 }
 
-#info_btn:focus {
-    outline: none;
-    opacity: 1;
+#info_btn:hover + #info_img{
+    width: calc(0.05 * var(--height));
 }
 
 #debugger {
-    grid-area: rightdebugger;
-    justify-self: center;
-    align-self: center;
-    z-index: 3;
-    width: calc(0.5 * var(--height));
-    height: calc(0.9 * var(--height));
-    background: linear-gradient(0deg,#333333,#555555);
+    grid-area: 2 / 2 / 4 / 3;
     display: grid;
-    grid-template-rows: 4.25% 91.5% 4.25%;
-    grid-template-columns: 4.5% 91% 4.5%;
-    grid-template-areas: ". . ." ". console ." ". . .";
+    grid-template-columns: auto calc(0.55 * var(--height)) auto;
+    grid-template-rows: auto calc(0.55 * var(--height)) auto;
 }
 
-.console_disabled {
-    opacity: 0.25;
-}
-
-.console_enabled {
-    opacity: 1;
+#debugger_bg {
+    grid-area: 1 / 1 / 4 / 4;
+    width: calc(0.7 * var(--height));
+    z-index: 1;
 }
 
 #console {
-    grid-area: console;
+    grid-area: 2 / 2 / 3 / 3;
+    width: calc(0.55 * var(--height));
+    z-index: 2;
+}
+
+#console {
+    grid-area: 2 / 2 / 3 / 3;
+    width: calc(0.55 * var(--height));
+    height: calc(0.55 * var(--height));
+    z-index: 2;
     align-self: center;
     justify-self: center;
-    width: 100%;
-    height: 100%;
     outline: none;
     overflow: visible;
     border: none;
@@ -203,52 +191,28 @@ body {
     background: #f6f6f6;
 }
 
-#author_bar {
-    grid-area: 3 / 1 / 4 / 4;
-    width: 100%;
-    height: calc(0.05 * var(--height));
-    margin-left: auto;
-    margin-right: auto;
+#footer {
+    grid-area: 5 / 1 / 6 / 3;
+    width: 100vw;
+    height: 100%;
+    align-self: center;
+    justify-self: center;
     position: sticky;
     display: grid;
-    grid-template-columns: auto calc(0.8 * var(--height)) auto;
+    grid-template-columns: auto calc(0.4 * var(--height)) auto;
     grid-template-areas: ". author .";
-    background: linear-gradient(0deg, #777777, #aaaaaa);
+    background: linear-gradient(0deg, #1b242d, #2d3d4d);
+    box-shadow: 0vw 0vh 1vw rgba(15,15,15,0.5);
     z-index: 4;
 }
 
 #author {
     grid-area: author;
-}
-
-.nav_btn {
-    background: linear-gradient(0deg, #777777, #aaaaaa);
-    border: none;
     font-size: calc(0.02 * var(--height));
-    color: #ffffff;
-    cursor: pointer;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    opacity: 0.75;
-    transition-duration: 1.2s;
-}
-
-.nav_btn:hover {
-    background: linear-gradient(0deg, #333333, #555555);
-    color: #ffffff;
-    opacity: 0.75;
-}
-
-.nav_btn:focus {
-    outline: 0;
-    background: linear-gradient(0deg, #555555, #999999);
-    color: #ffffff;
-    opacity: 0.75;
 }
 
 #info_section {
-    grid-area: 1 / 2 / 4 /3;
+    grid-area: 1 / 1 / 6 /3;
     z-index: 4;
     visibility: hidden;
     align-self: center;
@@ -295,4 +259,8 @@ body {
 #info_section button:focus {
     opacity: 1;
     outline: 0;
+}
+
+.white_components {
+    fill: #FFFFFF;
 }

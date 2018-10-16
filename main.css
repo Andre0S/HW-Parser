@@ -71,7 +71,7 @@ body {
 .btn_disabled {
     background: linear-gradient(0deg, #1b242d, #2d3d4d);
     border: none;
-    font-size: calc(0.03 * var(--height));
+    font-size: calc(0.025 * var(--height));
     color: #ffffff;
     cursor: auto;
     z-index: 2;
@@ -87,7 +87,7 @@ body {
 .btn {
     background: linear-gradient(0deg, #1b242d, #2d3d4d);
     border: none;
-    font-size: calc(0.03 * var(--height));
+    font-size: calc(0.025 * var(--height));
     color: #ffffff;
     cursor: pointer;
     z-index: 2;

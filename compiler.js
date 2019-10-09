@@ -4,59 +4,64 @@ let alphabetical = /[a-z]/i;
 let digits = /\d/;
 let numbers = /^-?\d*$/;
 let carriageReturn = /^\r\n|\r|\n$/;
-let instructions = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$|^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$|^j$|^jal$/i;
-let instructionsR = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$/i;
+let instructions = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$|^xchg$|^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^blm$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$|^j$|^jal$|^inc$|^dec$/i;
+let instructionsR = /^add$|^and$|^div$|^mult$|^jr$|^mfhi$|^mflo$|^sll$|^sllv$|^slt$|^sra$|^srav$|^srl$|^sub$|^break$|^rte$|^push$|^pop$|^xchg$/i;
 let instructionsR3registers = /^add$|^and$|^sllv$|^slt$|^srav$|^sub$/i;
 let instructionsRshamt = /^sll$|^sra$|^srl$/i;
-let instructionsRdivmult = /^div$|^mult$/i;
+let instructionsR2registers = /^div$|^mult$|^xchg$/i;
 let instructionsRstoppers = /^break$|^rte$/i;
 let instructionsRhilo = /^mfhi$|^mflo$/i;
 let instructionsRstack = /^push$|^pop$/i;
 let instructionsRjump = /^jr$/i;
-let instructionsI = /^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$/i;
+let instructionsI = /^addi$|^addiu$|^beq$|^bne$|^ble$|^bgt$|^blm$|^lb$|^lh$|^lui$|^lw$|^sb$|^sh$|^slti$|^sw$/i;
 let instructionsIimmediate = /^addi$|^addiu$|^slti$/i;
-let instructionsIbranch = /^beq$|^bne$|^ble$|^bgt$/i;
+let instructionsIbranch = /^beq$|^bne$|^ble$|^bgt$|^blm$/i;
 let instructionsIloadstore = /^lb$|^lh$|^lw$|^sb$|^sh$|^sw$/i;
 let instructionsIlui = /^lui$/i;
-let instructionsJ = /^j$|^jal$/i;
+let instructionsJ = /^j$|^jal$|^inc$|^dec$/i;
+let instructionsJnumm = /^inc$|^dec$/i;
 let commentLine = /^&&(.)*$/;
-let commentBlock = /^\*&(.|\r\n|\r|\n)*&\*$/;
+let commentBlock = /^&\*(.|\r\n|\r|\n)*\*&$/;
 let codes = [
-    {name:"add" , code: "100000"},
-    {name:"and" , code: "100100"},
-    {name:"div" , code: "011010"},
-    {name:"mult" , code: "011000"},
-    {name:"jr" , code: "001000"},
-    {name:"mfhi" , code: "010000"},
-    {name:"mflo" , code: "010010"},
-    {name:"sll" , code: "000000"},
-    {name:"sllv" , code: "000400"},
-    {name:"slt" , code: "101010"},
-    {name:"sra" , code: "000011"},
-    {name:"srav" , code: "000111"},
-    {name:"srl" , code: "000010"},
-    {name:"sub" , code: "100010"},
-    {name:"break" , code: "001101"},
-    {name:"rte" , code: "010011"},
-    {name:"push" , code: "000101"},
-    {name:"pop" , code: "000110"},
-    {name:"addi" , code: "001000"},
-    {name:"addiu" , code: "001001"},
-    {name:"beq" , code: "000100"},
-    {name:"bne" , code: "000101"},
-    {name:"ble" , code: "000110"},
-    {name:"bgt" , code: "000111"},
-    {name:"beqm" , code: "000001"},
-    {name:"lb" , code: "100000"},
-    {name:"lh" , code: "100001"},
-    {name:"lui" , code: "001111"},
-    {name:"lw" , code: "100011"},
-    {name:"sb" , code: "101000"},
-    {name:"sh" , code: "101001"},
-    {name:"slti" , code: "001010"},
-    {name:"sw" , code: "101011"},
-    {name:"j" , code: "000010"},
-    {name:"jal" , code: "000011"}];
+    {name:/^add$/i , code: "100000"},
+    {name:/^and$/i , code: "100100"},
+    {name:/^div$/i , code: "011010"},
+    {name:/^mult$/i , code: "011000"},
+    {name:/^jr$/i , code: "001000"},
+    {name:/^mfhi$/i , code: "010000"},
+    {name:/^mflo$/i , code: "010010"},
+    {name:/^sll$/i , code: "000000"},
+    {name:/^sllv$/i , code: "000100"},
+    {name:/^slt$/i , code: "101010"},
+    {name:/^sra$/i , code: "000011"},
+    {name:/^srav$/i , code: "000111"},
+    {name:/^srl$/i , code: "000010"},
+    {name:/^sub$/i , code: "100010"},
+    {name:/^break$/i , code: "001101"},
+    {name:/^rte$/i , code: "010011"},
+    {name:/^push$/i , code: "000101"},
+    {name:/^pop$/i , code: "000110"},
+    {name:/^xchg$/i , code: "000101"},
+    {name:/^addi$/i , code: "001000"},
+    {name:/^addiu$/i , code: "001001"},
+    {name:/^beq$/i , code: "000100"},
+    {name:/^bne$/i , code: "000101"},
+    {name:/^ble$/i , code: "000110"},
+    {name:/^bgt$/i , code: "000111"},
+    {name:/^blm$/i , code: "000001"},
+    {name:/^beqm$/i , code: "000001"},
+    {name:/^lb$/i , code: "100000"},
+    {name:/^lh$/i , code: "100001"},
+    {name:/^lui$/i , code: "001111"},
+    {name:/^lw$/i , code: "100011"},
+    {name:/^sb$/i , code: "101000"},
+    {name:/^sh$/i , code: "101001"},
+    {name:/^slti$/i , code: "001010"},
+    {name:/^sw$/i , code: "101011"},
+    {name:/^j$/i , code: "000010"},
+    {name:/^jal$/i , code: "000011"},
+    {name:/^inc$/i , code: "010000"},
+    {name:/^dec$/i , code: "010001"}];
 //part for further export.
 let temporary = [];
 let output = "";
@@ -73,6 +78,8 @@ function initialize(str) {
     line = 1;
     archiveLength = archive.length;
     inComment = false;
+    temporary = [];
+    output = "";
 }
 
 function getNextToken(){
@@ -98,21 +105,37 @@ function getNextToken(){
                     actualToken += actualChar;
                     position++;
                 } else if (commentStar) {
-                    actualToken += actualChar;
-                    position++;
-                } else if ('*&' == (actualChar + archive[position + 1])) {
-                    if (actualToken != '') {
-                        return actualToken;
-                    } else {
-                        commentStar = true;
-                        actualToken += actualChar + archive[position + 1];
-                        position += 2;
+                    if ('*&' == (actualChar + archive[position + 1])) {
+                        if (commentStar) {
+                            commentStar = false;
+                            actualToken += actualChar + archive[position + 1];
+                            position += 2;
+                            return actualToken;
+                        } else {
+                            throw "Illegal end of comment '*&' at line " + line + ", out of comment.";
+                        }
                     }
                 } else {
                     throw "Illegal character '*' at line " + line + ", out of comment.";
                 }
             } else {
-                throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                if (commentLine) {
+                    actualToken += actualChar;
+                    position++;
+                } else if (commentStar) {
+                    if ('*&' == (actualChar + archive[position + 1])) {
+                        if (commentStar) {
+                            commentStar = false;
+                            actualToken += actualChar + archive[position + 1];
+                            position += 2;
+                            return actualToken;
+                        } else {
+                            throw "Illegal end of comment '*&' at line " + line + ", out of comment.";
+                        }
+                    }
+                } else {
+                    throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                }
             }
         } else if (actualChar == '&') {
             if (!negative) {
@@ -131,19 +154,42 @@ function getNextToken(){
                         position += 2;
                     }
                 } else if ('&*' == (actualChar + archive[position + 1])) {
-                    if (actualToken == '') {
-                        throw "Illegal character '&' at line " + line + ", out of comment.";
+                    if (actualToken != '') {
+                        return actualToken;
                     } else {
-                        commentStar = false;
+                        commentStar = true;
                         actualToken += actualChar + archive[position + 1];
                         position += 2;
-                        return actualToken;
                     }
                 } else {
                     throw "Illegal character '&' at line " + line + ", out of comment.";
                 }
             } else {
-                throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                if (commentLine) {
+                    actualToken += actualChar;
+                    position++;
+                } else if (commentStar) {
+                    actualToken += actualChar;
+                    position++;
+                } else if ('&&' == (actualChar + archive[position + 1])) {
+                    if (actualToken != '') {
+                        return actualToken;
+                    } else {
+                        commentLine = true;
+                        actualToken += actualChar + archive[position + 1];
+                        position += 2;
+                    }
+                } else if ('&*' == (actualChar + archive[position + 1])) {
+                    if (actualToken != '') {
+                        return actualToken;
+                    } else {
+                        commentStar = true;
+                        actualToken += actualChar + archive[position + 1];
+                        position += 2;
+                    }
+                } else {
+                    throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                }
             }
         } else if (actualChar == ' ') {
             if (!(commentLine || commentStar)) {
@@ -207,7 +253,36 @@ function getNextToken(){
                     }
                 }
             } else {
-                throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                if (number || commentStar || commentLine) {
+                    if (carriageReturn.test(actualChar + archive[position + 1])) {
+                        if (commentLine) {
+                            commentLine = false;
+                        }
+                        line++;
+                        position+= 2;
+                        if(number) {
+                            number = false;
+                        }
+                        if (!commentStar) {
+
+                            return actualToken;
+                        }
+                    } else {
+                        if (commentLine) {
+                            commentLine = false;
+                        }
+                        line++;
+                        position++;
+                        if(number) {
+                            number = false;
+                        }
+                        if (!commentStar) {
+                            return actualToken;
+                        }
+                    }
+                } else {
+                    throw "Illegal character - at line " + line + ", out of comment or negative number.";
+                }
             }
         } else if (commentLine || commentStar) {
             position++;
@@ -220,7 +295,7 @@ function getNextToken(){
 
 function getCode(name) {
     for (let i = 0; i < codes.length; i++) {
-        if (codes[i].name == name) {
+        if (codes[i].name.test(name)) {
             return codes[i].code;
         }
     }
@@ -333,7 +408,8 @@ function getCommandFromToken() {
         } catch (err) {
             throw err;
         }
-        if (!commentBlock.test(Token) && !commentLine.test(Token)) {
+        console.log(Token);
+        if (!commentBlock.test(Token) && !commentLine.test(Token) && !('' == Token)) {
             if (instructions.test(Token) && !InstructionInitiated) {
                 opcode_funct = getCode(Token);
                 if (instructionsR.test(Token)) {
@@ -343,8 +419,8 @@ function getCommandFromToken() {
                         type = "R3registers";
                     } else if (instructionsRshamt.test(Token)) {
                         type = "Rshamt";
-                    } else if (instructionsRdivmult.test(Token)) {
-                        type = "Rdivmult";
+                    } else if (instructionsR2registers.test(Token)) {
+                        type = "R2registers";
                     } else if (instructionsRstoppers.test(Token)) {
                         type = "Rstoppers";
                         returner += "00000000000000000000" + opcode_funct;
@@ -373,8 +449,13 @@ function getCommandFromToken() {
                     }
                 } else {
                     temp += Token;
-                    returner += opcode_funct;
-                    type = "J";
+                    if (instructionsJnumm.test(Token)) {
+                        returner += opcode_funct;
+                        type = "Jnumm";
+                    } else {
+                        returner += opcode_funct;
+                        type = "J";
+                    }
                 }
                 InstructionInitiated = true;
             } else if (numbers.test(Token) && InstructionInitiated) {
@@ -454,7 +535,7 @@ function getCommandFromToken() {
                             throw "Register cannot be a negative number, got " + Token + ", at line " + line;
                         }
                         break;
-                    case "Rdivmult":
+                    case "R2registers":
                         if (str_numb > -1) {
                             switch (instructionCounter) {
                                 case 0:
@@ -670,7 +751,7 @@ function getCommandFromToken() {
                             case 2:
                                 if (str_numb > -1) {
                                     try {
-                                        rt = toBinaryNumber(str_numb,5);
+                                        rs = toBinaryNumber(str_numb,5);
                                     } catch (err) {
                                         throw err + " for RT at line " + line;
                                     }
@@ -719,7 +800,7 @@ function getCommandFromToken() {
                     case "J":
                         if (str_numb > -1) {
                             try {
-                                offset = toBinaryImmediate(str_numb,28,false);
+                                offset = toBinaryImmediate(str_numb,26,false);
                             } catch (err) {
                                 throw err + " for OFFSET at line " + line + ", number too big.";
                             }
@@ -729,7 +810,7 @@ function getCommandFromToken() {
                             return returner+"&"+temp;
                         } else {
                             try {
-                                offset = toBinaryImmediate(str_numb,28,true);
+                                offset = toBinaryImmediate(str_numb,26,true);
                             } catch (err) {
                                 throw err + " for OFFSET at line " + line + ", number too negative.";
                             }
@@ -737,6 +818,21 @@ function getCommandFromToken() {
                             returner += offset;
                             instructionCounter++;
                             return returner+"&"+temp;
+                        }
+                        break;
+                    case "Jnumm":
+                        if (str_numb > -1) {
+                            try {
+                                offset = toBinaryImmediate(str_numb,26,false);
+                            } catch (err) {
+                                throw err + " for OFFSET at line " + line + ", number too big.";
+                            }
+                            temp += ' ' + str_numb;
+                            returner += offset;
+                            instructionCounter++;
+                            return returner+"&"+temp;
+                        } else {
+                            throw "Expecting a positive number for INC or DEC instruction, got this " + Token + " instead, at line " + line;
                         }
                         break;
                 }
@@ -748,7 +844,7 @@ function getCommandFromToken() {
                 }
             }
         } else {
-            return returner;
+            return '';
         }
     }
 }
